@@ -2,10 +2,12 @@
 
 .data
 coordenadas: .word
+V: .word
 
 .text
 li a2,N
 la t2,coordenadas #peguei o endereÃ§o do vetor onde vou guardar as words coordenadas
+la t6,V
 sw a2,0(t2) #primeiro elemento Ã© o nÃºmero de elementos no vetor coordenadas
 
 #CODIGO DA VAL
@@ -30,6 +32,7 @@ li t5, 4 #alocando um numero em t5
 mul a3,a2,t5 #multiplicamos o Nx4
 sub t2,t2,a3 #  voltando ao inicio do vetor de tamanho N ( t4 = Nx4)
 mv t0,zero
+mv t6,t2
 #Codigo que faz a serapação de x e y no vetor principal
 VECTOR:
 lw t1,4(t2) #primeira coordenada
@@ -37,8 +40,10 @@ li t3, 0xFFFF0000 #mascara do x
 li t4, 0x0000FFFF #mascara do y
 and t3,t3,t1 #t3 com valor de x1
 srli t3,t3,16 
+sw t3,256(t6) #salvar x na memoria para mais tarde!
 fcvt.s.w f1,t3 #f1 com valor de x1 em float
 and t4,t4,t1 #t4 com valor de y1
+sw t4,260(t6) #salvar y na memoria para mais tarde
 fcvt.s.w f2,t4 #f2 com valor de y1 em float
 #Código que faz o calculo do modulo
 fmul.s f1,f1,f1
@@ -48,6 +53,7 @@ fsqrt.s f4,f3 # Colocamos o valor do módulo em f4
 addi s0,t2,96 # Valor para o vetor de modulos
 fsw f4,0(s0)
 addi t2,t2,4
+addi t6,t6,8
 addi t0,t0,1
 blt t0,a2,VECTOR
 addi a4,a2,-1 #Calcula o valor de N-1
