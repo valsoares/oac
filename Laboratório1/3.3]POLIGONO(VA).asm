@@ -3,16 +3,16 @@
 V:  .word 5,5,5,234,314,234,314,5,20,5,20,219,299,219,299,20,40,20,40,199,279,199,279,40,60,40,60,179,259,179
 
 .text
- 	la t0,exceptionHandling	# carrega em tp o endereÁo base das rotinas do sistema ECALL
- 	csrw t0,utvec 		# seta utvec para o endereÁo tp
- 	csrwi ustatus,1 	# seta o bit de habilitaÁ„o de interrupÁ„o em ustatus (reg 0)
+ 	la t0,exceptionHandling	# carrega em tp o endere√ßo base das rotinas do sistema ECALL
+ 	csrw t0,utvec 		# seta utvec para o endere√ßo tp
+ 	csrwi ustatus,1 	# seta o bit de habilita√ß√£o de interrup√ß√£o em ustatus (reg 0)
  	
-#Preciso manter os registradores a1-->a5 vazios para colocar as funÁıes
-POLIGONO:#funÁ„o que coloca V(coordenadas x e y) e A(cor)
-	la t2,V # pegando endereÁo do Vetor V
+#Preciso manter os registradores a1-->a5 vazios para colocar as fun√ß√µes
+POLIGONO:#fun√ß√£o que coloca V(coordenadas x e y) e A(cor)
+	la t2,V # pegando endere√ßo do Vetor V
 	li a4,A #pegando a COR 
-	# lw t3,0(coordenadas) #pegar o valor de N l· na memÛria, primeiro vetora da coordenadas
-	li t3,14 # (N/2) -1, È o numero de retas que devem ser feitass	
+	# lw t3,0(coordenadas) #pegar o valor de N l√° na mem√≥ria, primeiro vetora da coordenadas
+	li t3,14 # (N/2) -1, √© o numero de retas que devem ser feitass	
 LINHA: 	
 	lw s0,0(t2) #colocando em um registrador o valor do primeiro x
 	mv a0,s0 #pega o valor de x0 e poe em a0
@@ -29,7 +29,7 @@ LINHA:
 	addi t4,t4,1
 	addi t2,t2,8 #para que a primeira coordenada tenha uma linha para a segunda coordenada
 	bne t4,t3,LINHA
-	li a7, 10 #chamada de saida, para n„o dar tela azul!
+	li a7, 10 #chamada de saida, para n√£o dar tela azul!
 	ecall
 	
 .include "SYSTEMv17b.s"
