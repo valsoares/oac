@@ -2,12 +2,10 @@
 
 .data
 coordenadas: .word
-V: .word
 
 .text
 li a2,N
 la t2,coordenadas #peguei o endereÃ§o do vetor onde vou guardar as words coordenadas
-la t6,V
 sw a2,0(t2) #primeiro elemento Ã© o nÃºmero de elementos no vetor coordenadas
 
 #CODIGO DA VAL
@@ -53,7 +51,7 @@ fsqrt.s f4,f3 # Colocamos o valor do módulo em f4
 addi s0,t2,96 # Valor para o vetor de modulos
 fsw f4,0(s0)
 addi t2,t2,4
-addi t6,t6,8
+addi t6,t6,8 # a distancia entre x e o proximo x é de 8 bytes!
 addi t0,t0,1
 blt t0,a2,VECTOR
 addi a4,a2,-1 #Calcula o valor de N-1
