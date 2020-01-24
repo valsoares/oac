@@ -51,13 +51,12 @@ fsqrt.s f4,f3 # Colocamos o valor do módulo em f4
 addi s0,t2,96 # Valor para o vetor de modulos
 fsw f4,0(s0)
 addi t2,t2,4
-addi t6,t6,8 # a distancia entre x e o proximo x é de 8 bytes!
+addi t6,t6,8
 addi t0,t0,1
 blt t0,a2,VECTOR
 addi a4,a2,-1 #Calcula o valor de N-1
 mul a3,a4,t5 #multiplicamos o (N-1)x4
 sub s0,s0,a3 #  voltando ao inicio do vetor de tamanho (N-1)[o primeiro não tem mais!] ( t4 = (N-1)x4)
-
 ##Codigo que faz a ordenação do vetor de módulos
 
 MAIN:	mv a0,s0 #mudei aqui para ir para nosso inicio do VETOR DE MODULOS ( cuidado para não enviar a word mas o endereço)
@@ -78,11 +77,23 @@ MAIN:	mv a0,s0 #mudei aqui para ir para nosso inicio do VETOR DE MODULOS ( cuida
 
 
 SWAP:	slli t1,a1,2
+	li t6,2
+	mul t6,t1,t6
 	add t1,a0,t1
-	lw t0,0(t1)
-	lw t2,4(t1)
-	sw t2,0(t1)
-	sw t0,4(t1)
+	addi t6,t6,160
+	add t6,a0,t6
+	lw t0,0(t1) #carrega o modulo da primeira coordenada
+	lw t2,4(t1) # carrega o modulo da segunda coordenada
+	sw t2,0(t1) #salva o modulo da segunda coordenada no primeiro espaço
+	sw t0,4(t1) #salva o modulo da primeira coordenada no segundo espaço
+	lw t0,0(t6) # carrega o x0
+	lw t2,8(t6) # carrega o x1
+	sw t2,0(t6) # salva o x1 no local do x0
+	sw t0,8(t6) # salva o x0 no local do x1
+	lw t0,4(t6) # carrega o y0
+	lw t2,12(t6) # carrega o y1
+	sw t2,4(t6) # salva o y1 no local do 0
+	sw t0,12(t6) # salva o y0 no local do y1
 	ret
 
 SORT:	addi sp,sp,-20
