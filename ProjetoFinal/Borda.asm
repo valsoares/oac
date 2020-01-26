@@ -1,7 +1,7 @@
 	#Arrumando os ecall
-	la t0,exceptionHandling	# carrega em tp o endereÁo base das rotinas do sistema ECALL
- 	csrw t0,utvec 		# seta utvec para o endereÁo tp
- 	csrwi ustatus,1 	# seta o bit de habilitaÁ„o de interrupÁ„o em ustatus (reg 0)
+	la t0,exceptionHandling	# carrega em tp o endere√ßo base das rotinas do sistema ECALL
+ 	csrw t0,utvec 		# seta utvec para o endere√ßo tp
+ 	csrwi ustatus,1 	# seta o bit de habilita√ß√£o de interrup√ß√£o em ustatus (reg 0)
 #Pintar a tela toda de verde
 	mv a0,zero	
 	addi a0,a0,56
@@ -157,7 +157,34 @@
 	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
 	ecall
 	
-#Para que a Cobra n„o possa tocar na borda fazemos a cada movimento uma comparaÁ„o: se a cor do pixel for preto, v· para a funÁ„o Morte, dessa fomra batsa fazer o corpo da cobra preto que ela morre se comer a sÌ mesma!
+#Para que a Cobra n√£o possa tocar na borda fazemos a cada movimento uma compara√ß√£o: se a cor do pixel for preto, v√° para a fun√ß√£o Morte, dessa fomra batsa fazer o corpo da cobra preto que ela morre se comer a s√≠ mesma!
+
+#Codigo da Val
+#cores decodificadas com o blue: http://manderc.com/apps/karograph/help/colors_en.php
+
+li s1,0xFF000000 #endere√ßo inicial da matriz (esquerda cima)
+li s2,0xFF012BFF #endere√ßo inicial da ma√ßa - final da matriz
+li s3,0x07 #cor vermelha
+li s4,0x00 #preto
+
+comeu:
+#codigo para crescer a cobra
+#j sorteia
+
+
+
+sorteia:
+li a7,42 #gera um inteiro aleatorio
+li a1,76799 #limite superior da escolha do inteiro aleatorio (320x240 = 76800 - 1 = 76799 pq come√ßa do zero)
+ecall #valor sorteado vai para o a0
+add t1,s1,a0 #somar o valor sorteado com o endere√ßo de inicio
+lb t2,0(t1) #pegar a cor do pixel do endere√ßo sorteado
+beq t2,s4,sorteia #se for preto (a mesma cor da cobra e da borda), sorteia de novo
+sb s3,0(t1) #coloca a cor vermelha no pixel sorteado
+sb s3,1(t1) #pinta o pixel a frente do sorteado
+sb s3,320(t1) #pinta o pixel a baixo do sorteado
+sb s3,321(t1) #pinta o pixel a baixo e a frente do sorteado	
+#ret
 
 #Finaliza
 li a7, 10
