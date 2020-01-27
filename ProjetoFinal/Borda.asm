@@ -1,7 +1,7 @@
 	#Arrumando os ecall
-	la t0,exceptionHandling	# carrega em tp o endere√ßo base das rotinas do sistema ECALL
- 	csrw t0,utvec 		# seta utvec para o endere√ßo tp
- 	csrwi ustatus,1 	# seta o bit de habilita√ß√£o de interrup√ß√£o em ustatus (reg 0)
+	la t0,exceptionHandling	# carrega em tp o endereÁo base das rotinas do sistema ECALL
+ 	csrw t0,utvec 		# seta utvec para o endereÁo tp
+ 	csrwi ustatus,1 	# seta o bit de habilitaÁ„o de interrupÁ„o em ustatus (reg 0)
 #Pintar a tela toda de verde
 	mv a0,zero	
 	addi a0,a0,56
@@ -30,7 +30,7 @@
 	li a0, 314
 	li a1, 5
 	li a2, 314
-	li a3, 234
+	li a3, 235
 	li a4, 0
 	
 	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
@@ -68,7 +68,7 @@
 	li a0, 319
 	li a1, 0
 	li a2, 319
-	li a3, 239
+	li a3, 240
 	li a4, 0
 	
 	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
@@ -105,7 +105,7 @@
 	li a0, 318
 	li a1, 1
 	li a2, 318
-	li a3, 238
+	li a3, 239
 	li a4, 0
 	
 	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
@@ -142,7 +142,7 @@
 	li a0, 315
 	li a1, 4
 	li a2, 315
-	li a3, 235
+	li a3, 236
 	li a4, 0
 	
 	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
@@ -157,37 +157,203 @@
 	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
 	ecall
 	
-#Para que a Cobra n√£o possa tocar na borda fazemos a cada movimento uma compara√ß√£o: se a cor do pixel for preto, v√° para a fun√ß√£o Morte, dessa fomra batsa fazer o corpo da cobra preto que ela morre se comer a s√≠ mesma!
+#Quinta camada
+	#primeiro reta
+	li a0, 2
+	li a1, 2
+	li a2, 2
+	li a3, 237
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#segunda reta
+	li a0, 2
+	li a1, 2
+	li a2, 317
+	li a3, 2
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#terceira reta
+	li a0, 317
+	li a1, 2
+	li a2, 317
+	li a3, 238
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#quarta reta
+	li a0, 2
+	li a1, 237
+	li a2, 317
+	li a3, 237
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+#Sexta camada
+	#primeiro reta
+	li a0, 3
+	li a1, 3
+	li a2, 3
+	li a3, 236
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#segunda reta
+	li a0, 3
+	li a1, 3
+	li a2, 316
+	li a3, 3
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#terceira reta
+	li a0, 316
+	li a1, 3
+	li a2, 316
+	li a3, 237
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#quarta reta
+	li a0, 3
+	li a1, 236
+	li a2, 316
+	li a3, 236
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	
+#Setima camada
+	#primeiro reta
+	li a0, 6
+	li a1, 6
+	li a2, 6
+	li a3, 233
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#segunda reta
+	li a0, 6
+	li a1, 6
+	li a2, 313
+	li a3, 6
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#terceira reta
+	li a0, 313
+	li a1, 6
+	li a2, 313
+	li a3, 234
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#quarta reta
+	li a0, 6
+	li a1, 233
+	li a2, 313
+	li a3, 233
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	
+#Oitava camada
+	#primeiro reta
+	li a0, 7
+	li a1, 7
+	li a2, 7
+	li a3, 232
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#segunda reta
+	li a0, 7
+	li a1, 7
+	li a2, 312
+	li a3, 7
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#terceira reta
+	li a0, 312
+	li a1, 7
+	li a2, 312
+	li a3, 233
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	#quarta reta
+	li a0, 7
+	li a1, 232
+	li a2, 312
+	li a3, 232
+	li a4, 0
+	
+	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
+	ecall
+	
+	
+#Para que a Cobra n„o possa tocar na borda fazemos a cada movimento uma comparaÁ„o: se a cor do pixel for preto, v· para a funÁ„o Morte, dessa fomra batsa fazer o corpo da cobra preto que ela morre se comer a sÌ mesma!
 
 #Codigo da Val
-#cores decodificadas com o blue: http://manderc.com/apps/karograph/help/colors_en.php
+li s1,0xFF000000 #endereÁo inicial da matriz (esquerda cima)
+li s2,0xFF012338 #endereÁo final da matriz para o quadrado8 (tem que adaptar dependendo do tamanho do quadrado)
+#li s2,0xFF01283C #endereÁo final da matriz para o quadrado4
+li s3,0x07070707 #cor vermelha
+li s4,0x00000000 #preto
 
-li s1,0xFF000000 #endere√ßo inicial da matriz (esquerda cima)
-li s2,0xFF012BFF #endere√ßo inicial da ma√ßa - final da matriz
-li s3,0x07 #cor vermelha
-li s4,0x00 #preto
-
-comeu:
-#codigo para crescer a cobra
-#j sorteia
-
-
+li t1,0
+li t6,0
+li t2,4
 
 sorteia:
 li a7,42 #gera um inteiro aleatorio
-li a1,76799 #limite superior da escolha do inteiro aleatorio (320x240 = 76800 - 1 = 76799 pq come√ßa do zero)
-ecall #valor sorteado vai para o a0
-add t1,s1,a0 #somar o valor sorteado com o endere√ßo de inicio
-lb t2,0(t1) #pegar a cor do pixel do endere√ßo sorteado
-beq t2,s4,sorteia #se for preto (a mesma cor da cobra e da borda), sorteia de novo
-sb s3,0(t1) #coloca a cor vermelha no pixel sorteado
-sb s3,1(t1) #pinta o pixel a frente do sorteado
-sb s3,320(t1) #pinta o pixel a baixo do sorteado
-sb s3,321(t1) #pinta o pixel a baixo e a frente do sorteado	
-#ret
+li a1,18638 #limite superior da escolha do inteiro aleatorio para o quadrado8 (tem que adaptar dependendo do tamanho do quadrado)
+#li a1,18959 #limite superior da escolha do inteiro aleatorio para o quadrado4
+ecall
+mul a0,a0,t2 #multiplicar o valor sorteado por 4, pois uma word tem 4 bytes
+add t5,s1,a0 #somar o valor multiplicado com o endereÁo de inicio
+lw t3,0(t5) #pegar a cor do pixel do endereÁo sorteado
+beq t3,s4,sorteia #se for preto (a mesma cor da cobra e da borda), sorteia de novo
+jal quadrado8 #coloca a cor vermelha no pixel sorteado
+#jal quadrado4
+jal fim
 
-#Finaliza
-li a7, 10
+quadrado8: #8x8 bytes
+li t1,2560
+sw s3,0(t5)
+sw s3,4(t5)
+addi t5,t5,320
+addi t6,t6,320
+blt t6,t1,quadrado8
+ret
+
+quadrado4: #4x4 bytes
+li t1,1280
+sw s3,0(t5)
+addi t5,t5,320
+addi t6,t6,320
+blt t6,t1,quadrado4
+ret
+
+fim:
+li a7,10
 ecall
 
 .include "SYSTEMv17b.s"
