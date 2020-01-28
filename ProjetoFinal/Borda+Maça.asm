@@ -1,7 +1,7 @@
 	#Arrumando os ecall
-	la t0,exceptionHandling	# carrega em tp o endereÁo base das rotinas do sistema ECALL
- 	csrw t0,utvec 		# seta utvec para o endereÁo tp
- 	csrwi ustatus,1 	# seta o bit de habilitaÁ„o de interrupÁ„o em ustatus (reg 0)
+	la t0,exceptionHandling	# carrega em tp o endere√ßo base das rotinas do sistema ECALL
+ 	csrw t0,utvec 		# seta utvec para o endere√ßo tp
+ 	csrwi ustatus,1 	# seta o bit de habilita√ß√£o de interrup√ß√£o em ustatus (reg 0)
 #Pintar a tela toda de verde
 	mv a0,zero	
 	addi a0,a0,56
@@ -309,12 +309,12 @@
 	ecall
 	
 	
-#Para que a Cobra n„o possa tocar na borda fazemos a cada movimento uma comparaÁ„o: se a cor do pixel for preto, v· para a funÁ„o Morte, dessa fomra batsa fazer o corpo da cobra preto que ela morre se comer a sÌ mesma!
+#Para que a Cobra n√£o possa tocar na borda fazemos a cada movimento uma compara√ß√£o: se a cor do pixel for preto, v√° para a fun√ß√£o Morte, dessa fomra batsa fazer o corpo da cobra preto que ela morre se comer a s√≠ mesma!
 
 #Codigo da Val
-li s1,0xFF000000 #endereÁo inicial da matriz (esquerda cima)
-li s2,0xFF012338 #endereÁo final da matriz para o quadrado8 (tem que adaptar dependendo do tamanho do quadrado)
-#li s2,0xFF01283C #endereÁo final da matriz para o quadrado4
+li s1,0xFF000000 #endere√ßo inicial da matriz (esquerda cima)
+li s2,0xFF012338 #endere√ßo final da matriz para o quadrado8 (tem que adaptar dependendo do tamanho do quadrado)
+#li s2,0xFF01283C #endere√ßo final da matriz para o quadrado4
 li s3,0x07070707 #cor vermelha
 li s4,0x00000000 #preto
 
@@ -328,8 +328,8 @@ li a1,18638 #limite superior da escolha do inteiro aleatorio para o quadrado8 (t
 #li a1,18959 #limite superior da escolha do inteiro aleatorio para o quadrado4
 ecall
 mul a0,a0,t2 #multiplicar o valor sorteado por 4, pois uma word tem 4 bytes
-add t5,s1,a0 #somar o valor multiplicado com o endereÁo de inicio
-lw t3,0(t5) #pegar a cor do pixel do endereÁo sorteado
+add t5,s1,a0 #somar o valor multiplicado com o endere√ßo de inicio
+lw t3,0(t5) #pegar a cor do pixel do endere√ßo sorteado
 beq t3,s4,sorteia #se for preto (a mesma cor da cobra e da borda), sorteia de novo
 jal quadrado8 #coloca a cor vermelha no pixel sorteado
 #jal quadrado4
