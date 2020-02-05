@@ -1,16 +1,28 @@
 .data
 corpo: .word
-
+ponto: .string "SCORE:"
 .text
 #Arrumando os ecall
-	la t0,exceptionHandling	# carrega em tp o endereÁo base das rotinas do sistema ECALL
- 	csrw t0,utvec 		# seta utvec para o endereÁo tp
- 	csrwi ustatus,1 	# seta o bit de habilitaÁ„o de interrupÁ„o em ustatus (reg 0)
+	la t0,exceptionHandling	# carrega em tp o endere√ßo base das rotinas do sistema ECALL
+ 	csrw t0,utvec 		# seta utvec para o endere√ßo tp
+ 	csrwi ustatus,1 	# seta o bit de habilita√ß√£o de interrup√ß√£o em ustatus (reg 0)
 
+# escrevendo score ao lado da pontua√ß√£o
+la a0,ponto
+li a1,200
+li a2,0
+li a3,0xFF
+li a4,0
+
+li a7,104
+ecall
+
+#Setando o vetor da cobra
 li t4, 100 	
 la s0,corpo
 li t2, 3
-sw t2, 0(s0)
+sw t2, 0(s0) #Por algum motivo se eu colocar um li a7, 104 aqui em baixo ele buga
+
 #colocando o valor do tamanho da cobra no score
 LOOP:
 lw a0,0(s0)
@@ -19,11 +31,13 @@ li a1, 250		  # x = 250
 li a2, 0		  # y = 0
 li a3, 0xFF               # Cor
 li a4, 0
+
 li a7, 101 		  # imprime o valor da soma na tela 
 ecall
 
 #dormir por 1 segundo
-li a0, 1000
+li a0, 10
+
 li a7, 32
 ecall
 
