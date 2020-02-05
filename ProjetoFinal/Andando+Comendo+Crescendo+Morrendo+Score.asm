@@ -1,16 +1,16 @@
 .data
-
+ponto: .string "SCORE:"
 corpo: .word
 
 .text
 
-#Ideias de implementaÁıes futuras
-#1)Para que a Cobra n„o possa tocar na borda fazemos a cada movimento uma comparaÁ„o: se a cor do pixel for preto, v· para a funÁ„o Morte, dessa fomra batsa fazer o corpo da cobra preto que ela morre se comer a sÌ mesma!
+#Ideias de implementa√ß√µes futuras
+#1)Para que a Cobra n√£o possa tocar na borda fazemos a cada movimento uma compara√ß√£o: se a cor do pixel for preto, v√° para a fun√ß√£o Morte, dessa fomra batsa fazer o corpo da cobra preto que ela morre se comer a s√≠ mesma!
 desenho:
 #Arrumando os ecall
-	la t0,exceptionHandling	# carrega em tp o endereÁo base das rotinas do sistema ECALL
- 	csrw t0,utvec 		# seta utvec para o endereÁo tp
- 	csrwi ustatus,1 	# seta o bit de habilitaÁ„o de interrupÁ„o em ustatus (reg 0)
+	la t0,exceptionHandling	# carrega em tp o endere√ßo base das rotinas do sistema ECALL
+ 	csrw t0,utvec 		# seta utvec para o endere√ßo tp
+ 	csrwi ustatus,1 	# seta o bit de habilita√ß√£o de interrup√ß√£o em ustatus (reg 0)
 
 #################################################################
 #			Desenhar Mapa				#
@@ -332,36 +332,46 @@ desenho:
 	
 	li a7, 47 #desenha na tela os valores x0=a0, y0=a1 , x1=a2 , y1=a3 , cor= a4, a5= frame 
 	ecall
+	
+	# escrevendo score ao lado da pontua√ß√£o
+	la a0,ponto
+	li a1,200
+	li a2,0
+	li a3,0xFF
+	li a4,0
+
+	li a7,104
+ 	ecall
 
 #########################################################################
-#			ConfiguraÁ„o inicial				#
+#			Configura√ß√£o inicial				#
 #########################################################################
 
 #Infos:
-#1)endereÁo final da matriz para o quadrado 8x8 È 0xFF012338 = endereÁo limite que pode pintar
-#2)N„o utilizar os registradores s1,s2,s3,s4,s5, pois eles guardam as cores
-#3)N„o utilizar o registrador a6, pois ele È essencial para a movimentaÁ„o e est· sempre sendo utilizado para esse fim
+#1)endere√ßo final da matriz para o quadrado 8x8 √© 0xFF012338 = endere√ßo limite que pode pintar
+#2)N√£o utilizar os registradores s1,s2,s3,s4,s5, pois eles guardam as cores
+#3)N√£o utilizar o registrador a6, pois ele √© essencial para a movimenta√ß√£o e est√° sempre sendo utilizado para esse fim
 
-li s1,0xFF000000 #endereÁo inicial da matriz (esquerda cima)
-li s2,0x00000000 #registrador n„o utilizado no momento que pode ser utilizado para colocar outra cor
+li s1,0xFF000000 #endere√ßo inicial da matriz (esquerda cima)
+li s2,0x00000000 #registrador n√£o utilizado no momento que pode ser utilizado para colocar outra cor
 li s3,0x00000000 #cor da cobra: preto
 li s4,0x38383838 #cor do fundo: verde
-li s5,0x07070707 #cor da maÁa: vermelho
-li a6,0xFF0096A0 #endereÁo do ponto central do mapa = inicio da cobra
+li s5,0x07070707 #cor da ma√ßa: vermelho
+li a6,0xFF0096A0 #endere√ßo do ponto central do mapa = inicio da cobra
 
 #################################################################################
 #		Coloca cobra inicial no vetor corpo				#
 #################################################################################
 
-li t2,3 #tamanho de quadrados que a cobra vai ter ao comeÁar
+li t2,3 #tamanho de quadrados que a cobra vai ter ao come√ßar
 
 #Infos:
-#1)Esse vetor contem os endereÁos iniciais da cobra
-#2)Primeiro elemento do vetor corpo È o tamanho da cobra
-#3)Segundo elemento do vetor corpo È o rabo da cobra
-#4)A cabeÁa È o ultimo elemento do vetor
+#1)Esse vetor contem os endere√ßos iniciais da cobra
+#2)Primeiro elemento do vetor corpo √© o tamanho da cobra
+#3)Segundo elemento do vetor corpo √© o rabo da cobra
+#4)A cabe√ßa √© o ultimo elemento do vetor
 
-la s0,corpo #s0 = endereÁo do vetor corpo
+la s0,corpo #s0 = endere√ßo do vetor corpo
 sw t2,0(s0) #t2 = tamanho da cobra
 li t6,0	    #contador
 #alocando os N primeiros quadrados da cobra no vetor corpo
@@ -379,12 +389,12 @@ blt t6,t2,inicial
 #Infos:
 #1)Os quadrados sao feitos em camadas: de cima para baixo
 #2)Desenha-se 1 quadrado por vez da esquerda para a direita
-#3)No final a posiÁ„o de a6 È atualizada para cima esquerda
+#3)No final a posi√ß√£o de a6 √© atualizada para cima esquerda
 
 li t1,0 
 li t3,0 	 #contator para fazer N quadrados 8x8
 li t6,0 	 #contator para fazer 1 quadrado 8x8
-li a6,0xFF0096A0 #atualizando endereÁo do inicio
+li a6,0xFF0096A0 #atualizando endere√ßo do inicio
 
 cobra:
 li t1,2560 	 #t1 = (320x8) = 8 camadas
@@ -400,16 +410,16 @@ li t6,0
 blt t3,t2,cobra
 
 #################################################################
-#		Sorteia local da maÁa 				#
+#		Sorteia local da ma√ßa 				#
 #################################################################
 
 #Infos:
-#1)O local est· sendo sorteado de forma que a maÁa sempre fique alinhada com a cobra
-#2)Est· sendo sorteado 2 valores: 1 que corresponde a linha e outro a coluna
-#3)A linha tem que ser no m·ximo 30, pois 240/8 = 30 (quadrado 8x8), mas como tem as bodas 30 - 2 = 28
-#4)A coluna tem que ser no m·ximo 320, pois o bitmap possui 320 de comprimento, mas como tem as bordas 320 - 16 = 304
-#5)A coluna deve ser m˙ltiplo de 8
-#6)O c·lculo feito È: endereÁo_inicial + [(320*8)*linha + coluna]
+#1)O local est√° sendo sorteado de forma que a ma√ßa sempre fique alinhada com a cobra
+#2)Est√° sendo sorteado 2 valores: 1 que corresponde a linha e outro a coluna
+#3)A linha tem que ser no m√°ximo 30, pois 240/8 = 30 (quadrado 8x8), mas como tem as bodas 30 - 2 = 28
+#4)A coluna tem que ser no m√°ximo 320, pois o bitmap possui 320 de comprimento, mas como tem as bordas 320 - 16 = 304
+#5)A coluna deve ser m√∫ltiplo de 8
+#6)O c√°lculo feito √©: endere√ßo_inicial + [(320*8)*linha + coluna]
 
 la s0,corpo #botando em s0 o inicio do meu vetor cobra
 
@@ -423,23 +433,23 @@ li t6,2560 #320*8
 sorteia:
 li a7,42 	  #gera um inteiro aleatorio
 li a1,28 	  #maximo numero de linhas
-ecall 		  #a0 = numero da linha que a maÁa vai ser desenhada
+ecall 		  #a0 = numero da linha que a ma√ßa vai ser desenhada
 mul t6,t6,a0 	  #t6 = 2560 * linha
 li a1,304	  #maximo numero de colunas
-ecall 		  #numero da coluna que a maÁa vai ser desenhada
+ecall 		  #numero da coluna que a ma√ßa vai ser desenhada
 remu t1,a0,t2     #resto da divisao por 8 do numero sorteado 
 sub a0,a0,t1      #tira o resto do numero sorteado para a coluna ser divisivel por 8
 add a0,a0,t6      #(2560 * linha) + coluna
-add t5,s1,a0 	  #somar o valor acima com o endereÁo de inicio
-lw t3,0(t5) 	  #pegar a cor do pixel do endereÁo sorteado
-beq t3,s3,sorteia #se for preto (a mesma cor da cobra e da borda), sorteia de novo
+add t5,s1,a0 	  #somar o valor acima com o endere√ßo de inicio
+lw t3,0(t5) 	  #pegar a cor do pixel do endere√ßo sorteado
+bne t3,s4,sorteia #se for n√£o for verde (a mesma cor do mapa), sorteia de novo
 li t6,0
 jal score
 jal quadrado8
 jal anda
 
 #################################################################
-#			Desenha maÁa 				#
+#			Desenha ma√ßa 				#
 #################################################################
 
 #Infos:
@@ -458,7 +468,7 @@ ret
 #################################################################
 #Infos:
 #1) pegando o tamanho da cobra salvo na memoria e desenhando la em cima na tela
-#2) H¡ UM BUG QUE A MA«√ PODE SER ESCRITA EM CIMA DO SCORE :P
+#2) H√Å UM BUG QUE A MA√á√É PODE SER ESCRITA EM CIMA DO SCORE :P
 #colocando o valor do tamanho da cobra no score
 score:
 lw a0,0(s0)
@@ -476,9 +486,9 @@ ret
 #################################################################
 
 #Infos:
-#1)Primeiramente foi feita a configuraÁ„o do teclado para pegar o dÌgito
-#2)Dependendo de qual tecla for pressionada (wasd), vai para outra funÁ„o para desenhar a cabeÁa na direÁ„o correta
-#3)O rabo est· sempre sendo apagado
+#1)Primeiramente foi feita a configura√ß√£o do teclado para pegar o d√≠gito
+#2)Dependendo de qual tecla for pressionada (wasd), vai para outra fun√ß√£o para desenhar a cabe√ßa na dire√ß√£o correta
+#3)O rabo est√° sempre sendo apagado
 
 anda:
 li a2,100 #d na tabela ascii
@@ -502,92 +512,92 @@ j anda
 direita:
 li t6,0
 li t3,0
-lw t3,4(s0)	 #pegando o endereÁo do rebo do vetor corpo
+lw t3,4(s0)	 #pegando o endere√ßo do rebo do vetor corpo
 jal comeu	 #funcao para saber se comeu
 d:
 li t1,2560
-sw s3,0(a6)  	 #pintando a nova cabeÁa da cor da cobra
-sw s3,4(a6)  	 #pintando a nova cabeÁa da cor da cobra
+sw s3,0(a6)  	 #pintando a nova cabe√ßa da cor da cobra
+sw s3,4(a6)  	 #pintando a nova cabe√ßa da cor da cobra
 sw s4,0(t3)  	 #pintando o rabo da cor do fundo
 sw s4,4(t3)  	 #pintando o rabo da cor do fundo
 addi a6,a6,320
 addi t3,t3,320
 addi t6,t6,320
 blt t6,t1,d
-addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeÁa
-addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeÁa
-jal atualiza	 #funcao para atualizar a posiÁ„o da cobra no vetor corpo
+addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabe√ßa
+addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabe√ßa
+jal atualiza	 #funcao para atualizar a posi√ß√£o da cobra no vetor corpo
 j anda
 
 esquerda:
 li t6,0
 addi a6,a6,-16	 #atualizando o valor de a6 para desenhar o proximo quadrado
-lw t3,4(s0)	 #pegando o endereÁo da cobra do vetor corpo
+lw t3,4(s0)	 #pegando o endere√ßo da cobra do vetor corpo
 jal comeu	 #funcao para saber se comeu
 a:
 li t1,2560
-sw s3,0(a6)	 #pintando a nova cabeÁa da cor da cobra
-sw s3,4(a6) 	 #pintando a nova cabeÁa da cor da cobra
+sw s3,0(a6)	 #pintando a nova cabe√ßa da cor da cobra
+sw s3,4(a6) 	 #pintando a nova cabe√ßa da cor da cobra
 sw s4,0(t3) 	 #pintando o rabo da cor do fundo
 sw s4,4(t3) 	 #pintando o rabo da cor do fundo
 addi a6,a6,320
 addi t3,t3,320
 addi t6,t6,320
 blt t6,t1,a
-addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeÁa
-addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeÁa
-jal atualiza	 #funcao para atualizar a posiÁ„o da cobra no vetor corpo
+addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabe√ßa
+addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabe√ßa
+jal atualiza	 #funcao para atualizar a posi√ß√£o da cobra no vetor corpo
 j anda
 
 baixo:
 li t6,0
 addi a6,a6,1000  #atualizando o valor de a6 para desenhar o proximo quadrado
 addi a6,a6,1552  #atualizando o valor de a6 para desenhar o proximo quadrado
-lw t3,4(s0) 	 #pegando o endereÁo da cobra do vetor corpo
+lw t3,4(s0) 	 #pegando o endere√ßo da cobra do vetor corpo
 jal comeu   	 #funcao para saber se comeu
 s:
 li t1,2560
-sw s3,0(a6)	 #pintando a nova cabeÁa da cor da cobra
-sw s3,4(a6)	 #pintando a nova cabeÁa da cor da cobra
+sw s3,0(a6)	 #pintando a nova cabe√ßa da cor da cobra
+sw s3,4(a6)	 #pintando a nova cabe√ßa da cor da cobra
 sw s4,0(t3)	 #pintando o rabo da cor do fundo
 sw s4,4(t3)	 #pintando o rabo da cor do fundo
 addi a6,a6,320
 addi t3,t3,320
 addi t6,t6,320
 blt t6,t1,s
-addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeÁa
-addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeÁa
-jal atualiza	 #funcao para atualizar a posiÁ„o da cobra no vetor corpo
+addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabe√ßa
+addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabe√ßa
+jal atualiza	 #funcao para atualizar a posi√ß√£o da cobra no vetor corpo
 j anda
 
 cima:
 li t6,0
 addi a6,a6,-1000 #atualizando o valor de a6 para desenhar o proximo quadrado
 addi a6,a6,-1568 #atualizando o valor de a6 para desenhar o proximo quadrado
-lw t3,4(s0)	 #pegando o endereÁo da cobra do vetor corpo
+lw t3,4(s0)	 #pegando o endere√ßo da cobra do vetor corpo
 jal comeu	 #funcao para saber se comeu
 w:
 li t1,2560
-sw s3,0(a6)	 #pintando a nova cabeÁa da cor da cobra
-sw s3,4(a6)	 #pintando a nova cabeÁa da cor da cobra
+sw s3,0(a6)	 #pintando a nova cabe√ßa da cor da cobra
+sw s3,4(a6)	 #pintando a nova cabe√ßa da cor da cobra
 sw s4,0(t3)	 #pintando o rabo da cor do fundo
 sw s4,4(t3)	 #pintando o rabo da cor do fundo
 addi a6,a6,320
 addi t3,t3,320
 addi t6,t6,320
 blt t6,t1,w
-addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeÁa
-addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeÁa
-jal atualiza	 #funcao para atualizar a posiÁ„o da cobra no vetor corpo
+addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabe√ßa
+addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabe√ßa
+jal atualiza	 #funcao para atualizar a posi√ß√£o da cobra no vetor corpo
 j anda
 
 #################################################################
-#		Atualiza posiÁ„o da cobra 			#
+#		Atualiza posi√ß√£o da cobra 			#
 #################################################################
 
 #Infos:
-#1)Atualiza as posiÁıes da cobra para ficarem sempre no inicio do vetor
-#2)Esquem·tico de como acontece a atualizaÁ„o: ABC -> BBC -> BCC -> BCD
+#1)Atualiza as posi√ß√µes da cobra para ficarem sempre no inicio do vetor
+#2)Esquem√°tico de como acontece a atualiza√ß√£o: ABC -> BBC -> BCC -> BCD
 
 atualiza:
 li t1,0
@@ -598,7 +608,7 @@ la s0,corpo	#botando em s0 o inicio do meu vetor cobra
 lw t1,0(s0) 	#tamanho da cobra
 mul t1,t1,t2
 add t1,t1,s0
-add t3,t3,s0 	#endereÁo atual da primeira parte da cobra (segundo elemento do vetor corpo)
+add t3,t3,s0 	#endere√ßo atual da primeira parte da cobra (segundo elemento do vetor corpo)
 desloca:
 lw t4,4(t3)
 sw t4,0(t3)
@@ -609,23 +619,23 @@ sw t1,0(t3)
 ret
 
 #########################################################
-#			Comeu a maÁa 			#
+#			Comeu a ma√ßa 			#
 #########################################################
 
 #Infos:
-#1)Se o proximo endereÁo que a cobra ir· for vermelho, ent„o cresce
+#1)Se o proximo endere√ßo que a cobra ir√° for vermelho, ent√£o cresce
 
 comeu:
 li t1,0
 lw t1,0(a6)
 beq t1,s5,cresce
-beq t1,s3,morreu #sempre que come , veja se n„o faz mal:
+beq t1,s3,morreu #sempre que come , veja se n√£o faz mal:
 ret
 
 cresce:
 li t1,2560
-sw s3,0(a6)	#pinta nova cabeÁa
-sw s3,4(a6)	#pinta nova cabeÁa
+sw s3,0(a6)	#pinta nova cabe√ßa
+sw s3,4(a6)	#pinta nova cabe√ßa
 addi a6,a6,320
 addi t6,t6,320
 blt t6,t1,cresce
@@ -635,16 +645,16 @@ la s0,corpo	#botando em s0 o inicio do meu vetor cobra
 lw t1,0(s0)	#pega o tamanho atual da minha cobra
 addi t1,t1,1	#incrementa o tamanho
 sw t1,0(s0)	#coloca o novo tamanho da cobra no vetor corpo
-#calculo do endereÁo da nova cabeÁa da cobra: s0 + 4*tamanho
+#calculo do endere√ßo da nova cabe√ßa da cobra: s0 + 4*tamanho
 li t2,4
 li t3,0
 mul t2,t2,t1	 #4*tamanho
 add t2,t2,s0	 #s0 + 4*tamanho
-addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeÁa
-addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeÁa
+addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabe√ßa
+addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabe√ßa
 addi t1,a6,-8
-sw t1,0(t2) 	 #colocando o endereÁo da nova parte da minha cobra no final do meu vetor
-j botamaca	 #colocando uma nova maÁa no mapa
+sw t1,0(t2) 	 #colocando o endere√ßo da nova parte da minha cobra no final do meu vetor
+j botamaca	 #colocando uma nova ma√ßa no mapa
 
 #########################################################
 #			Morreu a Cobra 			#
