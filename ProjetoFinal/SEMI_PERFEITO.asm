@@ -29,6 +29,8 @@ mv s6,zero
 mv s7,zero
 mv s8,zero
 mv s9,zero
+mv s10,zero
+mv s11,zero
 mv t0,zero
 mv t1,zero
 mv t2,zero
@@ -825,7 +827,14 @@ addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabe?a
 addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabe?a
 addi t1,a6,-8
 sw t1,0(t2) 	 #colocando o endere?o da nova parte da minha cobra no final do meu vetor
+li a0,67
+li a1,300
+li a2,24
+li a3,100	 #som do jogo, a0= nota, a1= duracao em ms, a2= instrumento e a3= volume
+li a7,31	 #system call de som
+ecall
 j botamaca	 #colocando uma nova ma?a no mapa
+
 
 #########################################################
 #			Morreu a Cobra 			#
