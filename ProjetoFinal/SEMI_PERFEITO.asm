@@ -502,12 +502,18 @@ li t3,0
 li t5,0
 li t6,2560 #320*8
 
-li a7,42 	  #gera um inteiro aleatorio
-li a1,28 	  #maximo numero de linhas
+li a7,41 	  #gera um inteiro aleatorio
+#li a1,28 	  #maximo numero de linhas
 ecall 		  #a0 = numero da linha que a ma?a vai ser desenhada
+li s9,19
+remu a0,a0,s9
+
 mul t6,t6,a0 	  #t6 = 2560 * linha
-li a1,304	  #maximo numero de colunas
+#li a1,304	  #maximo numero de colunas
 ecall 		  #numero da coluna que a ma?a vai ser desenhada
+li s9,295
+remu a0,a0,s9
+
 remu t1,a0,t2     #resto da divisao por 8 do numero sorteado 
 sub a0,a0,t1      #tira o resto do numero sorteado para a coluna ser divisivel por 8
 add a0,a0,t6      #(2560 * linha) + coluna
@@ -676,83 +682,83 @@ j andacima
 direita:
 li t6,0
 li t3,0
-lw t3,4(s0)	 #pegando o endereço do rebo do vetor corpo
+lw t3,4(s0)	 #pegando o endereÃ§o do rebo do vetor corpo
 jal comeu	 #funcao para saber se comeu
 d:
 li t1,2560
-sw s3,0(a6)  	 #pintando a nova cabeça da cor da cobra
-sw s3,4(a6)  	 #pintando a nova cabeça da cor da cobra
+sw s3,0(a6)  	 #pintando a nova cabeÃ§a da cor da cobra
+sw s3,4(a6)  	 #pintando a nova cabeÃ§a da cor da cobra
 sw s4,0(t3)  	 #pintando o rabo da cor do fundo
 sw s4,4(t3)  	 #pintando o rabo da cor do fundo
 addi a6,a6,320
 addi t3,t3,320
 addi t6,t6,320
 blt t6,t1,d
-addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeça
-addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeça
-jal atualiza	 #funcao para atualizar a posição da cobra no vetor corpo
+addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeÃ§a
+addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeÃ§a
+jal atualiza	 #funcao para atualizar a posiÃ§Ã£o da cobra no vetor corpo
 j andadireita
 
 esquerda:
 li t6,0
 addi a6,a6,-16	 #atualizando o valor de a6 para desenhar o proximo quadrado
-lw t3,4(s0)	 #pegando o endereço da cobra do vetor corpo
+lw t3,4(s0)	 #pegando o endereÃ§o da cobra do vetor corpo
 jal comeu	 #funcao para saber se comeu
 a:
 li t1,2560
-sw s3,0(a6)	 #pintando a nova cabeça da cor da cobra
-sw s3,4(a6) 	 #pintando a nova cabeça da cor da cobra
+sw s3,0(a6)	 #pintando a nova cabeÃ§a da cor da cobra
+sw s3,4(a6) 	 #pintando a nova cabeÃ§a da cor da cobra
 sw s4,0(t3) 	 #pintando o rabo da cor do fundo
 sw s4,4(t3) 	 #pintando o rabo da cor do fundo
 addi a6,a6,320
 addi t3,t3,320
 addi t6,t6,320
 blt t6,t1,a
-addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeça
-addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeça
-jal atualiza	 #funcao para atualizar a posição da cobra no vetor corpo
+addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeÃ§a
+addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeÃ§a
+jal atualiza	 #funcao para atualizar a posiÃ§Ã£o da cobra no vetor corpo
 j andaesquerda
 
 baixo:
 li t6,0
 addi a6,a6,1000  #atualizando o valor de a6 para desenhar o proximo quadrado
 addi a6,a6,1552  #atualizando o valor de a6 para desenhar o proximo quadrado
-lw t3,4(s0) 	 #pegando o endereço da cobra do vetor corpo
+lw t3,4(s0) 	 #pegando o endereÃ§o da cobra do vetor corpo
 jal comeu   	 #funcao para saber se comeu
 s:
 li t1,2560
-sw s3,0(a6)	 #pintando a nova cabeça da cor da cobra
-sw s3,4(a6)	 #pintando a nova cabeça da cor da cobra
+sw s3,0(a6)	 #pintando a nova cabeÃ§a da cor da cobra
+sw s3,4(a6)	 #pintando a nova cabeÃ§a da cor da cobra
 sw s4,0(t3)	 #pintando o rabo da cor do fundo
 sw s4,4(t3)	 #pintando o rabo da cor do fundo
 addi a6,a6,320
 addi t3,t3,320
 addi t6,t6,320
 blt t6,t1,s
-addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeça
-addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeça
-jal atualiza	 #funcao para atualizar a posição da cobra no vetor corpo
+addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeÃ§a
+addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeÃ§a
+jal atualiza	 #funcao para atualizar a posiÃ§Ã£o da cobra no vetor corpo
 j andabaixo
 
 cima:
 li t6,0
 addi a6,a6,-1000 #atualizando o valor de a6 para desenhar o proximo quadrado
 addi a6,a6,-1568 #atualizando o valor de a6 para desenhar o proximo quadrado
-lw t3,4(s0)	 #pegando o endereço da cobra do vetor corpo
+lw t3,4(s0)	 #pegando o endereÃ§o da cobra do vetor corpo
 jal comeu	 #funcao para saber se comeu
 w:
 li t1,2560
-sw s3,0(a6)	 #pintando a nova cabeça da cor da cobra
-sw s3,4(a6)	 #pintando a nova cabeça da cor da cobra
+sw s3,0(a6)	 #pintando a nova cabeÃ§a da cor da cobra
+sw s3,4(a6)	 #pintando a nova cabeÃ§a da cor da cobra
 sw s4,0(t3)	 #pintando o rabo da cor do fundo
 sw s4,4(t3)	 #pintando o rabo da cor do fundo
 addi a6,a6,320
 addi t3,t3,320
 addi t6,t6,320
 blt t6,t1,w
-addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeça
-addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeça
-jal atualiza	 #funcao para atualizar a posição da cobra no vetor corpo
+addi a6,a6,-1000 #atualizando o valor de a6 para a nova cabeÃ§a
+addi a6,a6,-1552 #atualizando o valor de a6 para a nova cabeÃ§a
+jal atualiza	 #funcao para atualizar a posiÃ§Ã£o da cobra no vetor corpo
 j andacima
 
 #################################################################
